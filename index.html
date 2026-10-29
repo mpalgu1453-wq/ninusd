@@ -62,84 +62,172 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* ================= Mobile polish ================= */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-padding-top: 4.5rem;
+    }
+    /* keep anchor/tab jumps clear of the sticky header */
+    section[id^="tab-"] {
+      scroll-margin-top: 4.5rem;
+    }
+    button {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    /* soft fade on the right edge of the scrollable tab bar */
+    .nav-scroll {
+      position: relative;
+    }
+    .nav-scroll::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 2rem;
+      pointer-events: none;
+      background: linear-gradient(to right, rgba(15, 23, 42, 0), #0f172a 85%);
+      transition: opacity 0.2s ease;
+    }
+    .nav-scroll.at-end::after {
+      opacity: 0;
+    }
+    @media (min-width: 640px) {
+      .nav-scroll::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 639px) {
+      /* 16px keeps iOS Safari from zooming when the search field is focused */
+      #globalSearchInput {
+        font-size: 16px;
+      }
+      .tab-btn {
+        min-height: 42px;
+      }
+      /* comfortable tap targets for filter chips */
+      .genre-btn,
+      .nso-filter-btn,
+      .search-result-card {
+        min-height: 38px;
+      }
+      footer a {
+        display: inline-block;
+        padding-block: 3px;
+      }
+      /* full-width tap targets for the main CTAs */
+      .hero-cta > button {
+        width: 100%;
+        justify-content: center;
+      }
+      main {
+        padding-left: 0.875rem;
+        padding-right: 0.875rem;
+      }
+      /* only one tab section is visible at a time, so drop the stacked gap */
+      main > .tab-section {
+        margin-top: 0;
+      }
+      body {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
   <!-- Top Brand Header -->
-  <header class="nintendo-gradient text-white sticky top-0 z-40 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+  <header class="nintendo-gradient text-white shadow-lg">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5 sm:gap-3">
         <!-- Brand Logo & Title -->
-        <div class="flex items-center gap-3">
-          <div class="bg-white text-nintendo-red font-extrabold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm select-none">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div class="bg-white text-nintendo-red font-extrabold px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm select-none shrink-0">
             <span class="inline-block w-3 h-5 border-2 border-nintendo-red rounded-l-md relative"><span class="w-1.5 h-1.5 bg-nintendo-red rounded-full absolute top-1 left-0.5"></span></span>
             <span class="inline-block w-3 h-5 bg-nintendo-red rounded-r-md relative"><span class="w-1.5 h-1.5 bg-white rounded-full absolute bottom-1 left-0.5"></span></span>
-            <span class="text-xl tracking-tighter ml-0.5">2</span>
+            <span class="text-lg sm:text-xl tracking-tighter ml-0.5">2</span>
           </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h1 class="text-lg sm:text-xl font-bold tracking-tight">Nintendo Switch 2</h1>
-              <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full font-medium">Trusted by SYNNEX</span>
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <h1 class="text-base sm:text-xl font-bold tracking-tight leading-tight whitespace-nowrap">Nintendo Switch 2</h1>
+              <span class="text-[10px] sm:text-xs bg-white/20 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Trusted by SYNNEX</span>
             </div>
-            <p class="text-xs text-red-100">เว็บสอนใช้งาน ตั้งค่าเครื่อง แนะนำเกม และคู่มือการดูแลครบวงจร</p>
+            <p class="text-[11px] sm:text-xs text-red-100 leading-snug">เว็บสอนใช้งาน ตั้งค่าเครื่อง แนะนำเกม และคู่มือการดูแลครบวงจร</p>
           </div>
         </div>
 
         <!-- Search & Mode Switcher -->
-        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-          <div class="relative flex-1 sm:w-64">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+          <div class="relative w-full sm:w-64 shrink-0">
             <input
               id="globalSearchInput"
               type="text"
               placeholder="ค้นหาวิธีใช้ เช่น ถอดจอย, ย้ายข้อมูล, ประกัน..."
-              class="w-full pl-9 pr-8 py-1.5 rounded-xl text-sm text-slate-900 bg-white/95 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-inner"
+              class="w-full pl-9 pr-8 py-2.5 sm:py-1.5 rounded-xl text-base sm:text-sm text-slate-900 bg-white/95 focus:bg-white focus:outline-none focus:ring-2 focus:ring-yellow-300 shadow-inner"
             />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
-            <button id="clearSearchBtn" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600 text-xs font-bold" title="ล้างคำค้นหา">✕</button>
+            <button id="clearSearchBtn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold" title="ล้างคำค้นหา">✕</button>
           </div>
 
           <!-- Audience Mode Toggle -->
           <button
             id="roleToggleBtn"
             type="button"
-            class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-900 text-white flex items-center gap-1.5 border border-white/20 transition shadow-sm"
+            class="w-full sm:w-auto justify-center whitespace-nowrap shrink-0 px-3 py-2.5 sm:py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-900 text-white flex items-center gap-1.5 border border-white/20 transition shadow-sm"
           >
-            <span id="roleIndicatorDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span id="roleIndicatorDot" class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
             <span id="roleToggleLabel">โหมด: ผู้ใช้งาน & ลูกค้า</span>
           </button>
         </div>
       </div>
     </div>
-
-    <!-- Navigation Bar -->
-    <div class="bg-slate-900 text-slate-200 border-t border-white/10">
-      <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <nav class="flex items-center gap-1 overflow-x-auto no-scrollbar py-2" aria-label="Main Navigation">
-          <button data-tab="overview" class="tab-btn active px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5">
-            <span>🎮</span> <span>1. รู้จักเครื่อง & ฟีเจอร์ใหม่</span>
-          </button>
-          <button data-tab="setup" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
-            <span>⚙️</span> <span>2. ตั้งค่าเครื่องครั้งแรก (10 ขั้นตอน)</span>
-          </button>
-          <button data-tab="account" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
-            <span>🛒</span> <span>3. สมัครบัญชี, eShop & NSO</span>
-          </button>
-          <button data-tab="games" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
-            <span>🕹️</span> <span>4. แผ่นเกม, อุปกรณ์เสริม & ผู้ปกครอง</span>
-          </button>
-          <button data-tab="warranty" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
-            <span>🛡️</span> <span>5. ประกัน Synnex & คู่มือหน้าร้าน</span>
-          </button>
-          <button data-tab="quiz" class="tab-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
-            <span>🏆</span> <span>6. แบบทดสอบความเข้าใจ</span>
-          </button>
-        </nav>
-      </div>
-    </div>
   </header>
+
+  <!-- Navigation Bar (sticky, compact) -->
+  <div class="bg-slate-900 text-slate-200 border-t border-white/10 sticky top-0 z-40 shadow-md">
+    <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
+        <div class="nav-scroll">
+          <nav class="flex items-center gap-1 xl:gap-0.5 overflow-x-auto no-scrollbar py-2 snap-x" aria-label="Main Navigation">
+            <button data-tab="overview" class="tab-btn active snap-start px-2.5 xl:px-2 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5">
+              <span aria-hidden="true">🎮</span>
+              <span class="hidden xl:inline">1. รู้จักเครื่อง &amp; ฟีเจอร์ใหม่</span>
+              <span class="xl:hidden">รู้จักเครื่อง</span>
+            </button>
+            <button data-tab="setup" class="tab-btn snap-start px-2.5 xl:px-2 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
+              <span aria-hidden="true">⚙️</span>
+              <span class="hidden xl:inline">2. ตั้งค่าเครื่อง 10 ขั้นตอน</span>
+              <span class="xl:hidden">ตั้งค่าเครื่อง</span>
+            </button>
+            <button data-tab="account" class="tab-btn snap-start px-2.5 xl:px-2 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
+              <span aria-hidden="true">🛒</span>
+              <span class="hidden xl:inline">3. บัญชี, eShop &amp; NSO</span>
+              <span class="xl:hidden">บัญชี &amp; eShop</span>
+            </button>
+            <button data-tab="games" class="tab-btn snap-start px-2.5 xl:px-2 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
+              <span aria-hidden="true">🕹️</span>
+              <span class="hidden xl:inline">4. เกม, อุปกรณ์ &amp; ผู้ปกครอง</span>
+              <span class="xl:hidden">เกม &amp; อุปกรณ์</span>
+            </button>
+            <button data-tab="warranty" class="tab-btn snap-start px-2.5 xl:px-2 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
+              <span aria-hidden="true">🛡️</span>
+              <span class="hidden xl:inline">5. ประกัน &amp; หน้าร้าน</span>
+              <span class="xl:hidden">ประกัน</span>
+            </button>
+            <button data-tab="quiz" class="tab-btn snap-start px-2.5 xl:px-2 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap transition flex items-center gap-1.5 hover:bg-slate-800">
+              <span aria-hidden="true">🏆</span>
+              <span class="hidden xl:inline">6. แบบทดสอบ</span>
+              <span class="xl:hidden">แบบทดสอบ</span>
+            </button>
+          </nav>
+        </div>
+    </div>
+  </div>
 
   <!-- Quick Search Results Drawer (Hidden by default) -->
   <div id="searchResultsPanel" class="hidden bg-amber-50 border-b border-amber-200 shadow-md">
@@ -180,8 +268,8 @@
             <div class="inline-flex items-center gap-2 bg-nintendo-red px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
               <span>New Generation Console</span>
             </div>
-            <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
-              เริ่มต้นใช้งาน <span class="text-red-400">Nintendo Switch 2</span> อย่างมั่นใจตั้งแต่วันแรก
+            <h2 class="text-[22px] leading-snug sm:text-4xl font-extrabold leading-tight">
+              เริ่มต้นใช้งาน <span class="text-red-400 whitespace-nowrap">Nintendo Switch 2</span> อย่างมั่นใจตั้งแต่วันแรก
             </h2>
             <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
               อัปเกรดครั้งใหญ่ด้วยหน้าจอสัมผัสขนาด <strong>7.9 นิ้ว Full HD (120Hz)</strong> เชื่อมต่อทีวีคมชัดสูงสุด <strong>4K 60Hz</strong> มาพร้อมจอยแม่เหล็ก <strong>Joy-Con 2 แบบ Snap</strong> ที่สไลด์เป็นเมาส์ได้ และปุ่ม <strong>C Button (GameChat)</strong> สำหรับแชตและแชร์หน้าจอเกมกับเพื่อนแบบเรียลไทม์
@@ -213,7 +301,7 @@
           </div>
 
           <!-- Quick Action Buttons -->
-          <div class="flex flex-wrap gap-3 pt-1">
+          <div class="hero-cta flex flex-wrap gap-3 pt-1">
             <button data-goto="setup" class="bg-nintendo-red hover:bg-red-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm shadow-lg transition flex items-center gap-2">
               <span>เริ่มตั้งค่าเครื่อง 10 ขั้นตอน</span> <span>→</span>
             </button>
@@ -503,12 +591,12 @@
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900">ขั้นตอนการตั้งค่าเครื่องเบื้องต้น (Initial Setup 10 ขั้นตอน)</h2>
             <p class="text-xs sm:text-sm text-slate-600 mt-0.5">กดเลือกหมายเลขขั้นตอน 1 - 10 หรือกดปุ่ม "ขั้นตอนถัดไป" เพื่อดูหน้าจอจำลองและเทคนิคการตั้งค่า</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button id="prevSetupStepBtn" type="button" class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold hover:bg-slate-100 transition">
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button id="prevSetupStepBtn" type="button" class="flex-1 sm:flex-none whitespace-nowrap px-2.5 sm:px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold hover:bg-slate-100 transition">
               ← ย้อนกลับ
             </button>
-            <span id="setupStepCounter" class="text-xs sm:text-sm font-bold px-3 py-2 bg-slate-900 text-white rounded-xl">ขั้นตอน 1 / 10</span>
-            <button id="nextSetupStepBtn" type="button" class="px-3.5 py-2 rounded-xl bg-nintendo-red text-white text-xs sm:text-sm font-semibold hover:bg-red-700 transition">
+            <span id="setupStepCounter" class="whitespace-nowrap text-[11px] sm:text-sm font-bold px-2 sm:px-3 py-2 bg-slate-900 text-white rounded-xl">ขั้นตอน 1 / 10</span>
+            <button id="nextSetupStepBtn" type="button" class="flex-1 sm:flex-none whitespace-nowrap px-2.5 sm:px-3.5 py-2 rounded-xl bg-nintendo-red text-white text-xs sm:text-sm font-semibold hover:bg-red-700 transition">
               ขั้นตอนถัดไป →
             </button>
           </div>
@@ -612,18 +700,18 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-white/10 border border-white/15 rounded-xl p-5 space-y-2">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-base sm:text-lg font-bold text-amber-300">🛍️ 1. Nintendo Account (สมัครฟรี)</span>
-              <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-0.5 rounded-full font-semibold">ไม่มีค่าใช้จ่ายรายเดือน</span>
+              <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-0.5 rounded-full font-semibold shrink-0">ไม่มีค่าใช้จ่ายรายเดือน</span>
             </div>
             <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
               ใช้สำหรับ<strong>เข้าใช้งานร้านค้า Nintendo eShop</strong> บนเครื่อง เพื่อเลือกซื้อและดาวน์โหลดเกมรูปแบบ Digital ผ่านบัตรเครดิต/เดบิต หรือกรอกรหัส Download Code
             </p>
           </div>
           <div class="bg-white/10 border border-white/15 rounded-xl p-5 space-y-2">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <span class="text-base sm:text-lg font-bold text-sky-300">🌐 2. Nintendo Switch Online / NSO</span>
-              <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2.5 py-0.5 rounded-full font-semibold">มีค่าสมัครสมาชิกรายเดือน/รายปี</span>
+              <span class="text-xs bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2.5 py-0.5 rounded-full font-semibold shrink-0">มีค่าสมัครสมาชิกรายเดือน/รายปี</span>
             </div>
             <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">
               ใช้สำหรับ<strong>เล่นเกมออนไลน์ร่วมกับคนอื่นผ่านอินเทอร์เน็ต</strong> (จับคู่หาห้อง/เล่นกับเพื่อน), ระบบสำรองเซฟเกมบน Cloud, การใช้งาน GameChat และคลังเกมคลาสสิกยุคเก่า
@@ -1551,6 +1639,15 @@
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tabId);
       });
+      // keep the active tab visible inside the horizontally scrollable bar (mobile)
+      const activeTabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      const navBar = document.querySelector('nav[aria-label="Main Navigation"]');
+      if (activeTabBtn && navBar) {
+        const navRect = navBar.getBoundingClientRect();
+        const btnRect = activeTabBtn.getBoundingClientRect();
+        const delta = (btnRect.left - navRect.left) - (navRect.width - btnRect.width) / 2;
+        navBar.scrollBy({ left: delta, behavior: 'smooth' });
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1971,6 +2068,19 @@
       document.getElementById('closeSearchPanelBtn').addEventListener('click', () => {
         searchResultsPanel.classList.add('hidden');
       });
+
+      // Mobile: fade the right edge of the tab bar until it is scrolled to the end
+      const navBar = document.querySelector('nav[aria-label="Main Navigation"]');
+      const navWrap = document.querySelector('.nav-scroll');
+      if (navBar && navWrap) {
+        const updateNavFade = () => {
+          const atEnd = navBar.scrollLeft + navBar.clientWidth >= navBar.scrollWidth - 4;
+          navWrap.classList.toggle('at-end', atEnd);
+        };
+        navBar.addEventListener('scroll', updateNavFade, { passive: true });
+        window.addEventListener('resize', updateNavFade);
+        updateNavFade();
+      }
     });
   </script>
 </body>
